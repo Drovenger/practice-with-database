@@ -1,0 +1,153 @@
+create database cars_shop;
+
+use cars_shop;
+
+create table customers
+(
+    customerNumber   int         not null,
+    customerName     varchar(50) not null,
+    contactLastName  varchar(50) not null,
+    contactFirstName varchar(50) not null,
+    phone            varchar(50) not null,
+    addressLine1     varchar(50) not null,
+    addressLine2     varchar(50),
+    city             varchar(50) not null,
+    state            varchar(50) not null,
+    postalCode       varchar(15) not null,
+    country          varchar(50) not null,
+    creditLimit      int
+);
+
+create table orders
+(
+    orderNumber     int         not null,
+    orderDate       date        not null,
+    requiredDate    date        not null,
+    shippedDate     date,
+    status          varchar(15) not null,
+    comments        text,
+    quantityOrdered int         not null,
+    priceEach       int         not null
+);
+
+create table payments
+(
+    customerNumber int         not null,
+    checkNumber    varchar(50) not null,
+    paymentDate    date        not null,
+    amount         int         not null
+);
+
+create table products
+(
+    productCode        varchar(15) not null,
+    productName        varchar(70) not null,
+    productScale       varchar(10) not null,
+    productVendor      varchar(50) not null,
+    productDescription text        not null,
+    quantityInStock    int         not null,
+    buyPrice           int         not null,
+    MSRP               int         not null
+);
+
+create table product_lines
+(
+    productLine     varchar(50) not null,
+    textDescription text,
+    image           text
+);
+
+create table employees
+(
+    employeeNumber int          not null,
+    lastName       varchar(50)  not null,
+    firstName      varchar(50)  not null,
+    email          varchar(100) not null,
+    jobTitle       varchar(50)  not null
+);
+
+create table offices
+(
+    officeCode   varchar(10) not null,
+    city         varchar(50) not null,
+    phone        varchar(50) not null,
+    addressLine1 varchar(50) not null,
+    addressLine2 varchar(50),
+    state        varchar(50),
+    country      varchar(50) not null,
+    postalCode   varchar(15) not null
+);
+
+alter table orders
+    add customerNumber int;
+
+alter table orders
+    add constraint orders_customers_fk
+        foreign key (customerNumber) references customers (customerNumber);
+
+alter table payments
+    add constraint payments_customers_fk
+        foreign key (customerNumber) references customers (customerNumber);
+
+create table order_details
+(
+    orderNumber int,
+    productCode varchar(15)
+);
+
+alter table products
+    add constraint products_pk
+        primary key (productCode);
+
+alter table order_details
+    add constraint order_details_products_productCode_fk
+        foreign key (productCode) references products (productCode);
+
+alter table orders
+    add constraint orders_pk
+        primary key (orderNumber);
+
+alter table order_details
+    add constraint order_details_orders_orderNumber_fk
+        foreign key (orderNumber) references orders (orderNumber);
+
+alter table product_lines
+    add constraint product_lines_pk
+        primary key (productLine);
+
+alter table products
+    add productLine varchar(50) not null;
+
+alter table products
+    add constraint products_product_lines_productLine_fk
+        foreign key (productLine) references product_lines (productLine);
+
+alter table payments
+    add salesRepEmployeeNumber int not null;
+
+alter table employees
+    add constraint employees_pk
+        primary key (employeeNumber);
+
+alter table payments
+    add constraint payments_employees_employeeNumber_fk
+        foreign key (salesRepEmployeeNumber) references employees (employeeNumber);
+
+alter table employees
+    add reportTo int default null;
+
+alter table employees
+    add constraint employees_employees_employeeNumber_fk
+        foreign key (reportTo) references employees (employeeNumber);
+
+alter table employees
+    add officeCode varchar(10) not null;
+
+alter table offices
+    add constraint offices_pk
+        primary key (officeCode);
+
+alter table employees
+    add constraint employees_offices_officeCode_fk
+        foreign key (officeCode) references offices (officeCode);
+
