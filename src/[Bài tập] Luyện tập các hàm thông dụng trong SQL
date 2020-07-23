@@ -1,0 +1,35 @@
+create database dkkh;
+
+use dkkh;
+
+create table dkkh
+(
+    id      int auto_increment primary key,
+    ten     varchar(15) not null,
+    tuoi    int         not null,
+    khoahoc varchar(10) not null,
+    sotien  int         not null
+);
+
+insert into dkkh(ten, tuoi, khoahoc, sotien)
+values ('Viet', 19, 'DTVT', 320000);
+insert into dkkh(ten, tuoi, khoahoc, sotien)
+values ('Thanh', 18, 'KTDN', 400000);
+insert into dkkh(ten, tuoi, khoahoc, sotien)
+values ('Nhan', 19, 'CK', 450000);
+insert into dkkh(ten, tuoi, khoahoc, sotien)
+values ('Huong', 20, 'TCNH', 500000);
+insert into dkkh(ten, tuoi, khoahoc, sotien)
+values ('Huong', 20, 'TCNH', 200000);
+
+select *
+from dkkh
+where ten = 'Huong';
+
+select sum(sotien)
+from dkkh
+where ten = 'Huong';
+
+select id, ten
+from dkkh
+group by ten;
