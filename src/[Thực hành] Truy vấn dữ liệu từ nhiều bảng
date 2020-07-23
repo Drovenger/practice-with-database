@@ -9,7 +9,7 @@ select customers.customerNumber, customers.customerName, orders.orderNumber, ord
 from customers
          left join orders on customers.customerNumber = orders.customerNumber;
 
-select customers.customerNumber, customers.customerName, orders.orderNumber, orders.status
+select *
 from customers
          left join orders on customers.customerNumber = orders.customerNumber
 where orderNumber is null;
