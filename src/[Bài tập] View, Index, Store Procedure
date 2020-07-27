@@ -1,0 +1,28 @@
+create database demo;
+
+use demo;
+
+create table products
+(
+    id                 int primary key,
+    productCode        int unique  not null,
+    productName        varchar(50) not null,
+    productPrice       int         not null,
+    productAmount      int         not null,
+    productDescription text,
+    productStatus      varchar(50) not null
+);
+
+alter table products
+    add index idx_product_code (productCode);
+
+alter table products
+    add index idx_product_name_price (productName, productPrice);
+
+explain
+select *
+from products;
+
+create view products_view as
+select productCode, productName, productPrice, productStatus
+from products;
