@@ -1,0 +1,14 @@
+delimiter //
+create procedure findAllCustomers()
+begin
+    select *from customers;
+end //
+
+call findAllCustomers();
+
+delimiter //
+drop procedure if exists 'findAllCustomers';
+create procedure findAllCustomers()
+begin
+    select * from customers where customer_number = 175;
+end;
